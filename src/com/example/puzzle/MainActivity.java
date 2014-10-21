@@ -68,7 +68,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				startTime = System.currentTimeMillis();
-				endTime = 0;
+				endTime = startTime;
 				steps = 0;
 				startTimer();
 			}
@@ -117,10 +117,10 @@ public class MainActivity extends Activity {
 				public void run() {
 					Message message = Message.obtain(handler, 0);
 					handler.sendMessage(message);
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-					}
+					// try {
+					// Thread.sleep(1000);
+					// } catch (InterruptedException e) {
+					// }
 
 				}
 			};
@@ -236,6 +236,9 @@ public class MainActivity extends Activity {
 
 	private boolean moveIt(Button button) {
 		int currentIdx = buttons.indexOf(button);
+		if (PUZZLE_KEY.equals(button.getText().toString())) {
+			return false;
+		}
 		if ((currentIdx + 1) % ROWS > 0) {
 			int possibleIdx = currentIdx + 1;
 			Button pb = buttons.get(possibleIdx);
