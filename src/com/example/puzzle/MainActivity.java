@@ -1,6 +1,7 @@
 package com.example.puzzle;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
@@ -24,7 +25,27 @@ public class MainActivity extends Activity {
 
 	private int ROWS = 4, MAX_BUTTONS = 16;
 
-	private List<Integer> RANDS = new ArrayList<Integer>();
+	private List<String> RANDS = new ArrayList<String>();
+
+	private List<String> INIT_LIST = new ArrayList<String>() {
+		{
+			add("1");
+			add("2");
+			add("3");
+			add("4");
+			add("5");
+			add("6");
+			add("7");
+			add("8");
+			add("9");
+			add("10");
+			add("11");
+			add("12");
+			add("13");
+			add("14");
+			add("15");
+		}
+	};
 
 	private long startTime, endTime;
 
@@ -145,23 +166,39 @@ public class MainActivity extends Activity {
 
 	private void resetRands() {
 		RANDS.clear();
+		if (INIT_LIST.size() != 15) {
+			INIT_LIST = new ArrayList<String>() {
+				{
+					add("1");
+					add("2");
+					add("3");
+					add("4");
+					add("5");
+					add("6");
+					add("7");
+					add("8");
+					add("9");
+					add("10");
+					add("11");
+					add("12");
+					add("13");
+					add("14");
+					add("15");
+				}
+			};
+		}
 		Random random = new Random();
-		while (RANDS.size() < MAX_BUTTONS - 1) {
-			int one = random.nextInt(MAX_BUTTONS - 1) + 1;
-			while (exists(one)) {
-				one = random.nextInt(MAX_BUTTONS - 1) + 1;
-			}
-			RANDS.add(one);
-		}
-	}
-
-	private boolean exists(int rand) {
-		for (Integer x : RANDS) {
-			if (x.intValue() == rand) {
-				return true;
+		int one = -1;
+		for (int i = 0; i < MAX_BUTTONS - 1; i++) {
+			int current = MAX_BUTTONS - i - 1;
+			if (current > 0) {
+				one = random.nextInt(current);
+				RANDS.add(INIT_LIST.get(one));
+				INIT_LIST.remove(one);
+			} else {
+				RANDS.add(INIT_LIST.get(0));
 			}
 		}
-		return false;
 	}
 
 	private void resetStatus() {
@@ -178,7 +215,7 @@ public class MainActivity extends Activity {
 				if (i == MAX_BUTTONS - 1) {
 					button.setText(PUZZLE_KEY);
 				} else {
-					button.setText(String.valueOf(RANDS.get(i)));
+					button.setText(RANDS.get(i));
 				}
 			}
 		} else {
@@ -188,7 +225,7 @@ public class MainActivity extends Activity {
 				if (i == MAX_BUTTONS - 1) {
 					button.setText(PUZZLE_KEY);
 				} else {
-					button.setText(String.valueOf(RANDS.get(i)));
+					button.setText(RANDS.get(i));
 				}
 				button.setLayoutParams(new LinearLayout.LayoutParams(0,
 						LayoutParams.WRAP_CONTENT, 1f));
